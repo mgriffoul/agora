@@ -16,6 +16,7 @@
         <v-form ref="form" v-model="validForm" @submit.prevent="handleSubmit">
           <v-text-field
             v-model="userInfo.mail"
+            @input="handleChange"
             :counter="50"
             :rules="mailRules"
             label="E-Mail"
@@ -24,6 +25,7 @@
 
           <v-text-field
             v-model="userInfo.username"
+            @input="handleChange"
             :counter="25"
             :rules="nameRules"
             label="Username"
@@ -32,6 +34,7 @@
 
           <v-text-field
             v-model="userInfo.password"
+            @input="handleChange"
             :counter="25"
             :rules="passwordRules"
             label="Password"
@@ -46,7 +49,8 @@
           ></v-checkbox>
 
           <v-btn
-            :disabled="!validForm"
+            :loading="loading"
+            :disabled="!validForm || requestError"
             color="success"
             class="mr-4"
             type="submit"
@@ -56,7 +60,7 @@
           </v-btn>
           <v-alert
             type="error"
-            v-if="errorMessage && validForm"
+            v-if="serverError || requestError"
             border="left"
             color="red accent-2"
             elevation="5"
@@ -72,18 +76,20 @@
 <script>
 import authenticationService from '../../services/authentication/authentication.service'
 import { nameRules, mailRules, passwordRules } from './validationRules'
-import { getErrorMessage } from './ErrorMessageService'
 
 export default {
   name: 'SignUp',
   data: () => ({
-    validForm: true,
+    validForm: false,
+    loading: false,
+    serverError: false,
+    requestError: false,
+    errorMessage: '',
     userInfo: {
       username: '',
       password: '',
       mail: ''
     },
-    errorMessage: '',
     checkbox: false,
     nameRules: nameRules,
     passwordRules: passwordRules,
@@ -93,18 +99,42 @@ export default {
   methods: {
     validate () {
       this.$refs.form.validate()
+      this.errorMessage = ''
     },
-    handleSubmit () {
-      console.log(this.userInfo.username)
-      authenticationService
-        .signUp(this.userInfo)
+    async handleSubmit () {
+      this.loading = true
+      this.serverError = false
+      await authenticationService
+        .signUp(this.userInfo, this.changeErrorState, this.validAndRedirect, this.resetErrorStateErrorState)
         .then(() => {
-          this.errorMessage = ''
+          this.loading = false
         })
-        .catch(error => {
-          console.log('ERRRRORRRRR    ' + error)
-          this.errorMessage = getErrorMessage(error, this.userInfo)
+        .catch(() => {
+          this.loading = false
         })
+    },
+    validAndRedirect () {
+      console.log('validAndRedirect  ')
+      this.serverError = false
+      this.errorMessage = false
+      this.errorMessage = ''
+    },
+    changeErrorState (isServerInError, isRequestInError, errorMessage) {
+      console.log('changeServerErrorState  ' + isServerInError + '  ' + isRequestInError + '  ' + errorMessage)
+      this.serverError = isServerInError
+      this.requestError = isRequestInError
+      this.errorMessage = errorMessage
+      if (isRequestInError) this.validForm = false
+    },
+    resetErrorStateErrorState () {
+      console.log('validAndRedirect  ')
+      this.requestError = false
+      this.errorMessage = ''
+      this.serverError = false
+    },
+    handleChange () {
+      this.validForm = true
+      this.requestError = false
     }
   }
 }

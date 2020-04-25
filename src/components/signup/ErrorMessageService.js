@@ -15,8 +15,7 @@ const messages = [
 
 const defaultError = "Désolé, une erreur inconnue s'est produite..."
 
-const getErrorMessage = (currentApiError, userInfos) => {
-  console.log('in service ' + currentApiError)
+const getErrorMessage = (currentApiError, userInfos, declareServerInError) => {
   let userInfo = ''
   if (currentApiError === 'MAIL_UNAVAILABLE')userInfo = userInfos?.mail
   if (currentApiError === 'USERNAME_UNAVAILABLE')userInfo = userInfos?.username
@@ -24,16 +23,11 @@ const getErrorMessage = (currentApiError, userInfos) => {
   let errorMessage = messages.filter(
     (message) => message.api_error === currentApiError)
     .map(message => message.message)[0]
-
-  console.log('entre deux  ::::: ' + errorMessage)
-
   if (errorMessage && errorMessage.includes('xxxxx')) {
-    console.log('if is true  + user info ' + userInfo)
     errorMessage = errorMessage.replace(/xxxxx/, userInfo)
   } else {
     errorMessage = defaultError
   }
-  console.log('après --------- ' + errorMessage)
   return errorMessage
 }
 
