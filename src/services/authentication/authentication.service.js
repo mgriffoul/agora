@@ -4,7 +4,7 @@ import Cookies from 'js-cookie'
 const AGORA_API_BASE_URL = 'http://localhost:8090/authentication/'
 
 class AuthenticationService {
-  signUp (user, changeErrorState, validAndRedirect, resetErrorStateErrorState) {
+  signUp (user, changeErrorState, validAndRedirect, resetErrorState) {
     return axios({
       method: 'post',
       url: AGORA_API_BASE_URL + 'signup',
@@ -20,7 +20,7 @@ class AuthenticationService {
     }).then(response => {
       if (response.status === 200) {
         Cookies.set('Authorization', response.data.jwtToken)
-        resetErrorStateErrorState()
+        resetErrorState()
         validAndRedirect()
         return response.data
       }

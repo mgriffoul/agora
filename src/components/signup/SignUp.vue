@@ -15,6 +15,7 @@
         <div class="text-uppercase title">sign up</div>
         <v-form ref="form" v-model="validForm" @submit.prevent="handleSubmit">
           <v-text-field
+            data-test="mailText"
             v-model="userInfo.mail"
             @input="handleChange"
             :counter="50"
@@ -24,6 +25,7 @@
           ></v-text-field>
 
           <v-text-field
+            data-test="usernameText"
             v-model="userInfo.username"
             @input="handleChange"
             :counter="25"
@@ -33,6 +35,7 @@
           ></v-text-field>
 
           <v-text-field
+            data-test="passwordText"
             v-model="userInfo.password"
             @input="handleChange"
             :counter="25"
@@ -41,7 +44,18 @@
             required
           ></v-text-field>
 
+          <v-alert
+            type="error"
+            v-if="serverError || requestError"
+            border="left"
+            color="red accent-2"
+            elevation="5"
+            class="error-message mt-6"
+          >{{ errorMessage }}</v-alert
+          >
+
           <v-checkbox
+            data-test="signup-agreement"
             v-model="checkbox"
             :rules="[v => !!v || 'You must agree to continue!']"
             label="Do you agree?"
@@ -58,15 +72,7 @@
           >
             Validate
           </v-btn>
-          <v-alert
-            type="error"
-            v-if="serverError || requestError"
-            border="left"
-            color="red accent-2"
-            elevation="5"
-            class="mt-6"
-            >{{ errorMessage }}</v-alert
-          >
+
         </v-form>
       </v-col>
     </v-row>
@@ -75,7 +81,7 @@
 
 <script>
 import authenticationService from '../../services/authentication/authentication.service'
-import { nameRules, mailRules, passwordRules } from './validationRules'
+import { nameRules, mailRules, passwordRules } from './signUpFormRules'
 
 export default {
   name: 'SignUp',
@@ -105,7 +111,7 @@ export default {
       this.loading = true
       this.serverError = false
       await authenticationService
-        .signUp(this.userInfo, this.changeErrorState, this.validAndRedirect, this.resetErrorStateErrorState)
+        .signUp(this.userInfo, this.changeErrorState, this.validAndRedirect, this.resetErrorState)
         .then(() => {
           this.loading = false
         })
@@ -114,26 +120,22 @@ export default {
         })
     },
     validAndRedirect () {
-      console.log('validAndRedirect  ')
       this.serverError = false
       this.errorMessage = false
       this.errorMessage = ''
     },
     changeErrorState (isServerInError, isRequestInError, errorMessage) {
-      console.log('changeServerErrorState  ' + isServerInError + '  ' + isRequestInError + '  ' + errorMessage)
       this.serverError = isServerInError
       this.requestError = isRequestInError
       this.errorMessage = errorMessage
       if (isRequestInError) this.validForm = false
     },
-    resetErrorStateErrorState () {
-      console.log('validAndRedirect  ')
+    resetErrorState () {
       this.requestError = false
       this.errorMessage = ''
       this.serverError = false
     },
     handleChange () {
-      this.validForm = true
       this.requestError = false
     }
   }
