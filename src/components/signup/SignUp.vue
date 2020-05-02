@@ -13,7 +13,7 @@
           >
         </v-btn>
         <div class="text-uppercase title">sign up</div>
-        <v-form ref="form" v-model="validForm" @submit.prevent="handleSubmit">
+        <v-form ref="form" v-model="validForm" @submit.prevent="handleSubmit" data-test = "signup-form">
           <v-text-field
             data-test="mailText"
             v-model="userInfo.mail"
@@ -63,6 +63,7 @@
           ></v-checkbox>
 
           <v-btn
+            data-test="signup-button"
             :loading="loading"
             :disabled="!validForm || requestError"
             color="success"
