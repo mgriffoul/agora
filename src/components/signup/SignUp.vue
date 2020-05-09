@@ -77,15 +77,18 @@
         </v-form>
       </v-col>
     </v-row>
+    <ConfirmationModal />
   </div>
 </template>
 
 <script>
 import authenticationService from '../../services/authentication/authentication.service'
 import { nameRules, mailRules, passwordRules } from './signUpFormRules'
+import ConfirmationModal from '../confirmation/ConfirmationModal'
 
 export default {
   name: 'SignUp',
+  components: { ConfirmationModal },
   data: () => ({
     validForm: false,
     loading: false,
@@ -129,7 +132,6 @@ export default {
       this.serverError = isServerInError
       this.requestError = isRequestInError
       this.errorMessage = errorMessage
-      if (isRequestInError) this.validForm = false
     },
     resetErrorState () {
       this.requestError = false
