@@ -1,34 +1,23 @@
 <template>
   <div>
     <v-dialog
-      v-model="dialog"
+      v-model="displayDialog"
       max-width="400"
+      @click:outside="onClickButton()"
     >
-      <v-card>
-        <v-card-title class="headline">Thank you for using Agora</v-card-title>
+      <v-card >
+        <v-card-title class="headline">Thank you for using Agora.</v-card-title>
 
         <v-card-text>
-          Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.
+          You can now sign in !
         </v-card-text>
 
         <v-card-actions>
-
-          <v-btn
-            color="green darken-1"
-            text
-            @click="dialog = false"
-          >
-            Disagree
-          </v-btn>
-
-          <v-btn
-            color="green darken-1"
-            text
-            @click="dialog = false"
-          >
-            Agree
+          <v-btn @click="onClickButton()" color="green darken-1" class="mx-auto" text>
+            Lets GO
           </v-btn>
         </v-card-actions>
+
       </v-card>
     </v-dialog>
   </div>
@@ -40,9 +29,14 @@ export default {
   props: {
     shouldDisplayDialog: Boolean
   },
-  data: () => {
-    return {
-      dialog: this.props.shouldDisplayDialog
+  computed: {
+    displayDialog: function () {
+      return this.shouldDisplayDialog
+    }
+  },
+  methods: {
+    onClickButton () {
+      this.$emit('confirm', 'validate')
     }
   }
 }

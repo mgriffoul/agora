@@ -77,14 +77,14 @@
         </v-form>
       </v-col>
     </v-row>
-    <ConfirmationModal />
+    <ConfirmationModal :should-display-dialog="true" v-on:confirm="redirectToLogin"/>
   </div>
 </template>
 
 <script>
-import authenticationService from '../../services/authentication/authentication.service'
-import { nameRules, mailRules, passwordRules } from './signUpFormRules'
-import ConfirmationModal from '../confirmation/ConfirmationModal'
+import authenticationService from '../../../services/authentication/authentication.service'
+import { nameRules, mailRules, passwordRules } from '../authenticationFormRules'
+import ConfirmationModal from '../../confirmation/ConfirmationModal'
 
 export default {
   name: 'SignUp',
@@ -95,6 +95,7 @@ export default {
     serverError: false,
     requestError: false,
     errorMessage: '',
+    displayDialog: false,
     userInfo: {
       username: '',
       password: '',
@@ -115,7 +116,7 @@ export default {
       this.loading = true
       this.serverError = false
       await authenticationService
-        .signUp(this.userInfo, this.changeErrorState, this.validAndRedirect, this.resetErrorState)
+        .signUp(this.userInfo, this.changeErrorState, this.confirmSignUp, this.resetErrorState)
         .then(() => {
           this.loading = false
         })
@@ -123,10 +124,11 @@ export default {
           this.loading = false
         })
     },
-    validAndRedirect () {
+    confirmSignUp () {
       this.serverError = false
       this.errorMessage = false
       this.errorMessage = ''
+      this.displayDialog = true
     },
     changeErrorState (isServerInError, isRequestInError, errorMessage) {
       this.serverError = isServerInError
@@ -140,6 +142,9 @@ export default {
     },
     handleChange () {
       this.requestError = false
+    },
+    redirectToLogin () {
+      this.$router.push('signin')
     }
   }
 }

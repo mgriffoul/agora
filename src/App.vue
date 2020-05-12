@@ -11,7 +11,7 @@
 
 <script>
 import AppBar from '@/components/appBar/AppBar.vue'
-import SignUp from './components/signup/SignUp'
+import SignUp from './components/authentication/signup/SignUp'
 
 export default {
   name: 'App',
