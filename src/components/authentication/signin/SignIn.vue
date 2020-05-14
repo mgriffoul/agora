@@ -7,7 +7,7 @@
       justify="center"
     >
       <v-col cols="8" sm="6" md="4" lg="3">
-        <v-btn top left absolute icon v-on:click="$router.push('Home')">
+        <v-btn top left absolute icon v-on:click="$router.push('/')">
           <v-icon large color="primary darken-2"
           >mdi-arrow-collapse-left</v-icon
           >
@@ -51,7 +51,6 @@
             color="success"
             class="mr-4"
             type="submit"
-            @click="validate"
           >
             Validate
           </v-btn>
@@ -80,6 +79,9 @@ export default {
       passwordRules: passwordRules,
       mailRules: mailRules
     }
+  },
+  created () {
+    this.userInfo.mail = this.$store.getters.userMail
   },
   methods: {
     async handleSubmit () {

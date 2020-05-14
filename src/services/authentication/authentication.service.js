@@ -4,7 +4,7 @@ import Cookies from 'js-cookie'
 const AGORA_API_BASE_URL = 'http://localhost:8090/authentication/'
 
 class AuthenticationService {
-  signUp (user, changeErrorState, validateSignUp, resetErrorState) {
+  signUp (user) {
     return axios({
       method: 'post',
       url: AGORA_API_BASE_URL + 'signup',
@@ -20,18 +20,14 @@ class AuthenticationService {
     }).then(response => {
       if (response.status === 200) {
         Cookies.set('Authorization', response.data.jwtToken)
-        resetErrorState()
-        validateSignUp()
         return response.data
       }
-    }).catch(function (error) {
-      if (error.response && error.response.status === 400) {
-        changeErrorState(false, true, error.response.data.message)
-        throw error.response.data.message
-      } else {
-        changeErrorState(true, false, 'Oups... Désolé. Un problème technique est survenu, veuillez réessayer ultérieurement.')
-        throw error
+    }).catch(function (apiError) {
+      const error = { message: apiError.response.data.message, serverError: true }
+      if (apiError?.response?.status === 400) {
+        error.serverError = false
       }
+      throw error
     })
   }
 

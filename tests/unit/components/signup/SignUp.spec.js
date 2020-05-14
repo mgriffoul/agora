@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import SignUp from '@/components/signup/SignUp.vue'
+import SignUp from '@/components/authentication/signup/SignUp.vue'
 import {
   mount
 } from '@vue/test-utils'
@@ -137,7 +137,7 @@ describe('SignUp', () => {
     'should display server error message and keep enabled button if server is unavailable', async () => {
       // Arrange
       const mockFn = jest.fn(() => {
-        wrapper.vm.changeErrorState(true, false, 'Server error')
+        wrapper.vm.changeErrorState(true)
       })
       wrapper.vm.handleSubmit = mockFn
       wrapper.find('[data-test="mailText"]').setValue('maqsdqsd@dqs.dom')
@@ -151,7 +151,7 @@ describe('SignUp', () => {
 
       // Assert
       expect(mockFn).toHaveBeenCalled()
-      expect(wrapper.find('.v-alert__content').text()).toBe('Server error')
+      expect(wrapper.find('.v-alert__content').text()).toBe('Oups... Désolé. Un problème technique est survenu, veuillez réessayer ultérieurement.')
       expect(wrapper.find('[data-test="signup-button"]').attributes('disabled')).toBeUndefined()
     })
 
@@ -159,7 +159,7 @@ describe('SignUp', () => {
     'should display request error message and disabled button if server answers 400', async () => {
       // Arrange
       const mockFn = jest.fn(() => {
-        wrapper.vm.changeErrorState(false, true, 'Request error')
+        wrapper.vm.changeErrorState(false, 'Request error')
       })
       wrapper.vm.handleSubmit = mockFn
       wrapper.find('[data-test="mailText"]').setValue('maqsdqsd@dqs.dom')
@@ -181,7 +181,7 @@ describe('SignUp', () => {
     'should make request error message disappear when handleChange is called', async () => {
       // Arrange
       const mockFn = jest.fn(() => {
-        wrapper.vm.changeErrorState(false, true, 'Request error')
+        wrapper.vm.changeErrorState(false, 'Request error')
       })
       wrapper.vm.handleSubmit = mockFn
       wrapper.find('[data-test="mailText"]').setValue('maqsdqsd@dqs.dom')

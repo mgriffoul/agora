@@ -77,7 +77,7 @@
         </v-form>
       </v-col>
     </v-row>
-    <ConfirmationModal :should-display-dialog="true" v-on:confirm="redirectToLogin"/>
+    <ConfirmationModal :should-display-dialog="displayDialog" v-on:confirm="redirectToLogin"/>
   </div>
 </template>
 
@@ -116,26 +116,36 @@ export default {
       this.loading = true
       this.serverError = false
       await authenticationService
-        .signUp(this.userInfo, this.changeErrorState, this.confirmSignUp, this.resetErrorState)
-        .then(() => {
-          this.loading = false
+        .signUp(this.userInfo, this.changeErrorState)
+        .then((data) => {
+          this.storeUser(data)
+          this.confirmSignUp()
         })
-        .catch(() => {
+        .catch((error) => {
           this.loading = false
+          this.changeErrorState(error?.serverError, error?.message)
         })
     },
+    storeUser (user) {
+      this.$store.commit('logUser', (user))
+    },
     confirmSignUp () {
+      this.resetErrorState()
       this.serverError = false
       this.errorMessage = false
       this.errorMessage = ''
       this.displayDialog = true
     },
-    changeErrorState (isServerInError, isRequestInError, errorMessage) {
+    changeErrorState (isServerInError, errorMessage) {
+      if (isServerInError) {
+        errorMessage = 'Oups... Désolé. Un problème technique est survenu, veuillez réessayer ultérieurement.'
+      }
       this.serverError = isServerInError
-      this.requestError = isRequestInError
+      this.requestError = !isServerInError
       this.errorMessage = errorMessage
     },
     resetErrorState () {
+      this.loading = false
       this.requestError = false
       this.errorMessage = ''
       this.serverError = false
