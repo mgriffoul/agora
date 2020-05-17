@@ -7,7 +7,7 @@
       justify="center"
     >
       <v-col cols="8" sm="6" md="4" lg="3">
-        <v-btn top left absolute icon v-on:click="$router.push('/')">
+        <v-btn top left absolute icon v-on:click="$router.push('/home')">
           <v-icon large color="primary darken-2"
           >mdi-arrow-collapse-left</v-icon
           >
@@ -63,14 +63,15 @@
 
 <script>
 import { mailRules, passwordRules } from '../authenticationFormRules'
+import authenticationService from '../../../services/authentication/authentication.service'
 
 export default {
   name: 'SignIn',
   data: function () {
     return {
       userInfo: {
-        password: '',
-        mail: ''
+        mail: '',
+        password: ''
       },
       loading: false,
       validForm: false,
@@ -87,10 +88,35 @@ export default {
     async handleSubmit () {
       this.loading = true
       this.serverError = false
-      await setTimeout(alert('ok'), 1000)
+      await authenticationService
+        .signIn(this.userInfo)
+        .then((data) => {
+          this.registerToken(data)
+          this.confirmSignIn()
+        })
+        .catch((error) => {
+          this.loading = false
+          this.changeErrorState(error?.serverError, error?.message)
+        })
+    },
+    registerToken (token) {
+      console.log('register')
+      this.$store.commit('registerToken', (token.jwtToken))
     },
     handleChange () {
       this.requestError = false
+    },
+    confirmSignIn () {
+      console.log('route')
+      this.$router.push('/home')
+    },
+    changeErrorState (isServerInError, errorMessage) {
+      if (isServerInError) {
+        errorMessage = 'Oups... Désolé. Un problème technique est survenu, veuillez réessayer ultérieurement.'
+      }
+      this.serverError = isServerInError
+      this.requestError = !isServerInError
+      this.errorMessage = errorMessage
     }
   }
 }

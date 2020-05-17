@@ -9,8 +9,15 @@
 
     <v-row>
       <v-col justify="center" class="text-center" >
+        <router-link to="/signin">
+          <v-btn :link="true" color="primary" dark>Sign In</v-btn>
+        </router-link>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col justify="center" class="text-center" >
         <router-link to="/signup">
-        <v-btn :link="true" color="primary" dark>Sign Up</v-btn>
+          <v-btn :link="true" color="primary" dark>Sign Up</v-btn>
         </router-link>
       </v-col>
     </v-row>

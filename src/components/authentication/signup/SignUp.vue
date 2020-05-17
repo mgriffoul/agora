@@ -7,7 +7,7 @@
       justify="center"
     >
       <v-col cols="8" sm="6" md="4" lg="3">
-        <v-btn top left absolute icon v-on:click="$router.back()">
+        <v-btn top left absolute icon v-on:click="$router.push('/home')">
           <v-icon large color="primary darken-2"
             >mdi-arrow-collapse-left</v-icon
           >
@@ -84,7 +84,7 @@
 <script>
 import authenticationService from '../../../services/authentication/authentication.service'
 import { nameRules, mailRules, passwordRules } from '../authenticationFormRules'
-import ConfirmationModal from '../../confirmation/ConfirmationModal'
+import ConfirmationModal from '../confirmation/ConfirmationModal'
 
 export default {
   name: 'SignUp',
@@ -116,7 +116,7 @@ export default {
       this.loading = true
       this.serverError = false
       await authenticationService
-        .signUp(this.userInfo, this.changeErrorState)
+        .signUp(this.userInfo)
         .then((data) => {
           this.storeUser(data)
           this.confirmSignUp()

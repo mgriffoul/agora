@@ -31,16 +31,12 @@ class AuthenticationService {
     })
   }
 
-  logout () {
-    Cookies.remove('Authorization')
-  }
-
-  login (user) {
+  signIn (user) {
     return axios
       .post(AGORA_API_BASE_URL + 'signin', {
-        username: user.username,
+        mail: user.mail,
         password: user.password,
-        timeout: 1000,
+        timeout: 2000,
         headers: {
           'Content-Type': 'application/json'
         }
@@ -50,9 +46,18 @@ class AuthenticationService {
           Cookies.set('Authorization', response.data.jwtToken)
         }
         return response.data
-      }).catch(function (error) {
+      }).catch(function (apiError) {
+        const error = { message: apiError.response.data.message, serverError: true }
+        if (apiError?.response?.status === 400) {
+          error.serverError = false
+        }
         console.error(error)
+        throw error
       })
+  }
+
+  logout () {
+    Cookies.remove('Authorization')
   }
 
   healthCheck () {

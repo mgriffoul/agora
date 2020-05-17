@@ -3,14 +3,16 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import SignUp from '../components/authentication/signup/SignUp'
 import SignIn from '../components/authentication/signin/SignIn'
+import { BEFORE_ENTER_HOME } from './authenticationGuards'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'Home',
-    component: Home
+    component: Home,
+    beforeEnter: BEFORE_ENTER_HOME
   },
   {
     path: '/signup',

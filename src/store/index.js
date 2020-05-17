@@ -1,23 +1,27 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import Cookies from 'js-cookie'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     authentication: {
-      token: String,
+      token: Cookies.get('Authorization') || '',
       user: {
-        role: String,
-        status: String,
-        username: String,
-        mail: String
+        role: '',
+        status: '',
+        username: '',
+        mail: ''
       }
     }
   },
   getters: {
     userMail: state => {
       return state.authentication.user.mail
+    },
+    token: state => {
+      return state.authentication.token
     }
   },
   mutations: {
@@ -26,9 +30,13 @@ export default new Vuex.Store({
       state.authentication.user.username = userInfo.signedUpUser.username
       state.authentication.token = userInfo.jwtToken
       console.log(userInfo)
+    },
+    registerToken (state, token) {
+      state.authentication.token = token
     }
   },
   actions: {
+
   },
   modules: {
   }
