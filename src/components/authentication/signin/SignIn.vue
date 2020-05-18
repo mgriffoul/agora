@@ -81,10 +81,11 @@ export default {
       mailRules: mailRules
     }
   },
-  created () {
-    this.userInfo.mail = this.$store.getters.userMail
-  },
   methods: {
+    validate () {
+      this.$refs.form.validate()
+      this.errorMessage = ''
+    },
     async handleSubmit () {
       this.loading = true
       this.serverError = false
