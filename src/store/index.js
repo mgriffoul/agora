@@ -25,18 +25,11 @@ export default new Vuex.Store({
     }
   },
   mutations: {
-    logUser (state, userInfo) {
-      state.authentication.user.mail = userInfo.signedUpUser.mail
-      state.authentication.user.username = userInfo.signedUpUser.username
-      state.authentication.token = userInfo.jwtToken
-      console.log(userInfo)
-    },
-    registerToken (state, token) {
-      state.authentication.token = token
+    logUser (state, authentication) {
+      state.authentication = { ...authentication }
     }
   },
   actions: {
-
   },
   modules: {
   }

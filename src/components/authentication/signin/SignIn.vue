@@ -92,7 +92,7 @@ export default {
       await authenticationService
         .signIn(this.userInfo)
         .then((data) => {
-          this.registerToken(data)
+          this.registerUser(data)
           this.confirmSignIn()
         })
         .catch((error) => {
@@ -100,15 +100,20 @@ export default {
           this.changeErrorState(error?.serverError, error?.message)
         })
     },
-    registerToken (token) {
-      console.log('register')
-      this.$store.commit('registerToken', (token.jwtToken))
+    registerUser (user) {
+      const authentication = {
+        token: user.jwtToken,
+        user: {
+          username: user.signedInUser.username,
+          mail: user.signedInUser.mail
+        }
+      }
+      this.$store.commit('logUser', (authentication))
     },
     handleChange () {
       this.requestError = false
     },
     confirmSignIn () {
-      console.log('route')
       this.$router.push('/home')
     },
     changeErrorState (isServerInError, errorMessage) {

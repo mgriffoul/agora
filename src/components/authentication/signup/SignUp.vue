@@ -127,7 +127,14 @@ export default {
         })
     },
     storeUser (user) {
-      this.$store.commit('logUser', (user))
+      const authentication = {
+        token: user?.jwtToken,
+        user: {
+          username: user?.signedUpUser?.username,
+          mail: user?.signedUpUser?.mail
+        }
+      }
+      this.$store.commit('logUser', (authentication))
     },
     confirmSignUp () {
       this.resetErrorState()

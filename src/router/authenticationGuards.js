@@ -10,7 +10,7 @@ const BEFORE_ENTER_HOME = (to, from, next) => {
   } else if (!tokenStore && cookieToken) {
     Store.commit('registerToken', cookieToken)
   } else if (!cookieToken && tokenStore) {
-    Cookies.set('Authorization', Store.getters.token)
+    Cookies.set('Authorization', tokenStore)
   }
   next()
 }

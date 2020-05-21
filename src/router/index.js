@@ -12,7 +12,8 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: Home,
-    beforeEnter: BEFORE_ENTER_HOME
+    beforeEnter: BEFORE_ENTER_HOME,
+    alias: '/'
   },
   {
     path: '/signup',
