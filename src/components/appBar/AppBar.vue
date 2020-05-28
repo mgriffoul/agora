@@ -1,41 +1,54 @@
 <template>
   <v-app-bar app color="primary" dark>
-    <div class="d-flex align-center">
-      <v-img
-        alt="Vuetify Logo"
-        class="shrink mr-2"
-        contain
-        src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-        transition="scale-transition"
-        width="40"
-      />
-
-      <v-img
-        alt="Vuetify Name"
-        class="shrink mt-1 hidden-sm-and-down"
-        contain
-        min-width="100"
-        src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-        width="100"
-      />
-    </div>
+    <v-toolbar-title>
+      Agora
+    </v-toolbar-title>
 
     <v-spacer></v-spacer>
 
-    <v-btn
-      href="https://github.com/vuetifyjs/vuetify/releases/latest"
-      target="_blank"
-      text
-    >
-      <span class="mr-2">Latest Release</span>
-      <v-icon>mdi-open-in-new</v-icon>
-    </v-btn>
+    <v-menu bottom left nudge-bottom="60" min-width="300">
+      <template v-slot:activator="{ on }">
+        <v-btn
+          dark
+          icon
+          v-on="on"
+        >
+          <v-icon large >
+            mdi-account</v-icon>
+        </v-btn>
+      </template>
+
+      <v-list>
+        <v-list-item
+          v-for="(item, i) in items"
+          :key="i"
+          @click="route(item.path)"
+        >
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
   </v-app-bar>
 </template>
 
 <script>
 export default {
-  name: 'AppBar'
+  name: 'AppBar',
+  data: () => ({
+    items: [
+      { title: 'My Account', path: '/account' },
+      { title: 'Click 2' },
+      { title: 'Click 3' },
+      { title: 'Click Me 4' }
+    ]
+  }),
+  methods: {
+    route: function (path) {
+      if (path) {
+        this.$router.push(path)
+      }
+    }
+  }
 }
 </script>
 
