@@ -1,11 +1,12 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import { AGORA_API_BASE_URL, USER_ENDPOINT } from '../../constants'
 
 class UserService {
   getUser () {
     return axios({
       method: 'get',
-      url: 'http://localhost:8090/user/test',
+      url: AGORA_API_BASE_URL + USER_ENDPOINT,
       headers: {
         Authorization: 'Bearer ' + Cookies.get('Authorization')
       }
@@ -14,6 +15,17 @@ class UserService {
     }).catch((error) => {
       return error
     })
+  }
+
+  updateUser (user) {
+    return axios(AGORA_API_BASE_URL + USER_ENDPOINT + '/update', {
+      mail: user.mail,
+      password: user.username,
+      timeout: 2000,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(() => 'ok').catch(() => 'pas ok')
   }
 }
 

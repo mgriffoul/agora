@@ -1,13 +1,12 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
-
-const AGORA_API_BASE_URL = 'http://localhost:8090/authentication/'
+import { AGORA_API_BASE_URL, AUTHENTICATION_ENDPOINT } from '../../constants'
 
 class AuthenticationService {
   signUp (user) {
     return axios({
       method: 'post',
-      url: AGORA_API_BASE_URL + 'signup',
+      url: AGORA_API_BASE_URL + AUTHENTICATION_ENDPOINT + '/signup',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -33,7 +32,7 @@ class AuthenticationService {
 
   signIn (user) {
     return axios
-      .post(AGORA_API_BASE_URL + 'signin', {
+      .post(AGORA_API_BASE_URL + AUTHENTICATION_ENDPOINT + '/signin', {
         mail: user.mail,
         password: user.password,
         timeout: 2000,
