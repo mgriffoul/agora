@@ -84,7 +84,7 @@
 
 <script>
 import userService from '../../../src/services/user/userService'
-import { mailRules, nameRules, passwordRules } from '../authentication/authenticationFormRules'
+import { mailRules, nameRules } from '../authentication/authenticationFormRules'
 
 export default {
   name: 'Account',
@@ -95,7 +95,6 @@ export default {
         username: '',
         mail: ''
       },
-      passwordRules: passwordRules,
       mailRules: mailRules,
       nameRules: nameRules,
       loading: false,
