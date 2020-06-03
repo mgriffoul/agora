@@ -20,7 +20,7 @@ const messagesMap = [
     getter: getServerErrorMessage
   },
   {
-    api_error: 'INVALID_MAIL_OR_PASSWORD',
+    api_error: 'BAD_CREDENTIALS',
     getter: getInvalidMailOrPasswordMessage
   }
 ]

@@ -23,12 +23,10 @@ class AuthenticationService {
     }).then(response => {
       if (response.status === 200) {
         Cookies.set('Authorization', response.data.jwtToken)
-        console.log(response)
         return response.data
       }
     }).catch(function (apiError) {
       const error = { message: '', serverError: true }
-      console.log(apiError?.response?.data?.message)
       if (apiError?.response?.status === 400) {
         error.message = getErrorMessage(apiError?.response?.data?.message, user)
         error.serverError = false
@@ -57,10 +55,11 @@ class AuthenticationService {
       }).catch(function (apiError) {
         const error = { message: '', serverError: true }
         if (apiError?.response?.status === 400) {
-          error.message = getErrorMessage(apiError?.response?.data?.message)
+          error.message = getErrorMessage(apiError?.response?.data?.message, user)
           error.serverError = false
+          throw error
         }
-        error.message = getErrorMessage('SERVER_ERROR')
+        error.message = getErrorMessage('SERVER_ERROR', user)
         throw error
       })
   }
