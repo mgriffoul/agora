@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app color="primary" dark>
-    <v-toolbar-title>
+    <v-toolbar-title @click="redirectToHome" class="home-logo">
       Agora
     </v-toolbar-title>
 
@@ -36,10 +36,7 @@ export default {
   name: 'AppBar',
   data: () => ({
     items: [
-      { title: 'My Account', path: '/account' },
-      { title: 'Click 2' },
-      { title: 'Click 3' },
-      { title: 'Click Me 4' }
+      { title: 'My Account', path: '/account' }
     ]
   }),
   methods: {
@@ -47,9 +44,16 @@ export default {
       if (path) {
         this.$router.push(path)
       }
+    },
+    redirectToHome () {
+      this.$router.push('/')
     }
   }
 }
 </script>
 
-<style></style>
+<style>
+  .home-logo:hover {
+    cursor: pointer;
+  }
+</style>

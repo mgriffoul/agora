@@ -42,8 +42,10 @@
             :rules="passwordRules"
             label="Password"
             required
+            type="password"
           ></v-text-field>
-
+          <v-text-field style="display:none"></v-text-field>
+          <v-text-field type="password" style="display:none"></v-text-field>
           <v-alert
             type="error"
             v-if="serverError || requestError"

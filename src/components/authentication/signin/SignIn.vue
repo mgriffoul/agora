@@ -32,6 +32,7 @@
             :rules="passwordRules"
             label="Password"
             required
+            type="password"
           ></v-text-field>
 
           <v-alert
