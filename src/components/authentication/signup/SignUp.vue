@@ -75,6 +75,9 @@
           </v-btn>
 
         </v-form>
+        <v-row>
+          <span class="pl-3 mt-8">You already have an account ? <a href="#" @click.prevent="redirectToLogin">Sign in</a>.</span>
+        </v-row>
       </v-col>
     </v-row>
     <ConfirmationModal :should-display-dialog="displayDialog" v-on:confirm="redirectToLogin"/>

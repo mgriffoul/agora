@@ -56,6 +56,9 @@
           </v-btn>
 
         </v-form>
+        <v-row>
+          <span class="pl-3 mt-8">No account yet ? <a href="#" @click.prevent="routeToSignUp">Create one</a>.</span>
+        </v-row>
       </v-col>
     </v-row>
   </div>
@@ -115,6 +118,9 @@ export default {
     },
     confirmSignIn () {
       this.$router.push('/home')
+    },
+    routeToSignUp () {
+      this.$router.push('/signup')
     },
     changeErrorState (error) {
       const { message, serverError } = error

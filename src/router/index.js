@@ -13,7 +13,6 @@ const routes = [
     path: '/home',
     name: 'Home',
     component: Home,
-    beforeEnter: BEFORE_ENTER,
     alias: '/'
   },
   {
