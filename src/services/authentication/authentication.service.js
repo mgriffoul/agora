@@ -1,6 +1,10 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { AGORA_API_BASE_URL, AUTHENTICATION_ENDPOINT } from '../../constants'
+import {
+  AGORA_API_BASE_URL,
+  AUTHENTICATION_ENDPOINT
+} from '../../constants'
+import getErrorMessage from '../message/errorMessageService'
 
 class AuthenticationService {
   signUp (user) {
@@ -19,13 +23,18 @@ class AuthenticationService {
     }).then(response => {
       if (response.status === 200) {
         Cookies.set('Authorization', response.data.jwtToken)
+        console.log(response)
         return response.data
       }
     }).catch(function (apiError) {
-      const error = { message: apiError.response.data.message, serverError: true }
+      const error = { message: '', serverError: true }
+      console.log(apiError?.response?.data?.message)
       if (apiError?.response?.status === 400) {
+        error.message = getErrorMessage(apiError?.response?.data?.message, user)
         error.serverError = false
+        throw error
       }
+      error.message = getErrorMessage('SERVER_ERROR', user)
       throw error
     })
   }
@@ -46,11 +55,12 @@ class AuthenticationService {
         }
         return response.data
       }).catch(function (apiError) {
-        const error = { message: apiError.response.data.message, serverError: true }
+        const error = { message: '', serverError: true }
         if (apiError?.response?.status === 400) {
+          error.message = getErrorMessage(apiError?.response?.data?.message)
           error.serverError = false
         }
-        console.error(error)
+        error.message = getErrorMessage('SERVER_ERROR')
         throw error
       })
   }

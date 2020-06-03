@@ -49,7 +49,7 @@
                      data-test="signup-button"
                      :loading="loading"
                      color="primary"
-                     @click="validate"
+                     @click="updateUser"
                      width="80"
               >
                 valid
@@ -113,8 +113,14 @@ export default {
       this.$refs.form.validate()
       this.errorMessage = ''
     },
-    updateUser () {
-
+    async updateUser () {
+      await userService.updateUser(this.user)
+        .then((data) => {
+          this.modifying = false
+          this.user = { ...data }
+        })
+        .catch((data) => {
+        })
     },
     async loadUser () {
       await userService.getUser()

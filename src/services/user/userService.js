@@ -18,14 +18,20 @@ class UserService {
   }
 
   updateUser (user) {
-    return axios(AGORA_API_BASE_URL + USER_ENDPOINT + '/update', {
-      mail: user.mail,
-      password: user.username,
+    return axios({
+      method: 'post',
+      url: AGORA_API_BASE_URL + USER_ENDPOINT + '/update',
+      data: user,
       timeout: 2000,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + Cookies.get('Authorization')
       }
-    }).then(() => 'ok').catch(() => 'pas ok')
+    }).then((response) => {
+      return response.data
+    }).catch((error) => {
+      return error.message
+    })
   }
 }
 

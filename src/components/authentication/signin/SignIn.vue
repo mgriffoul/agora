@@ -97,7 +97,7 @@ export default {
         })
         .catch((error) => {
           this.loading = false
-          this.changeErrorState(error?.serverError, error?.message)
+          this.changeErrorState(error)
         })
     },
     registerUser (user) {
@@ -116,13 +116,13 @@ export default {
     confirmSignIn () {
       this.$router.push('/home')
     },
-    changeErrorState (isServerInError, errorMessage) {
-      if (isServerInError) {
-        errorMessage = 'Oups... Désolé. Un problème technique est survenu, veuillez réessayer ultérieurement.'
-      }
-      this.serverError = isServerInError
-      this.requestError = !isServerInError
-      this.errorMessage = errorMessage
+    changeErrorState (error) {
+      const { message, serverError } = error
+
+      console.log(message)
+      this.serverError = serverError
+      this.requestError = !serverError
+      this.errorMessage = message
     }
   }
 }

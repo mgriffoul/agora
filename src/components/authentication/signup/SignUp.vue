@@ -123,7 +123,7 @@ export default {
         })
         .catch((error) => {
           this.loading = false
-          this.changeErrorState(error?.serverError, error?.message)
+          this.changeErrorState(error)
         })
     },
     storeUser (user) {
@@ -143,13 +143,12 @@ export default {
       this.errorMessage = ''
       this.displayDialog = true
     },
-    changeErrorState (isServerInError, errorMessage) {
-      if (isServerInError) {
-        errorMessage = 'Oups... Désolé. Un problème technique est survenu, veuillez réessayer ultérieurement.'
-      }
-      this.serverError = isServerInError
-      this.requestError = !isServerInError
-      this.errorMessage = errorMessage
+    changeErrorState (error) {
+      const { message, serverError } = error
+
+      this.serverError = serverError
+      this.requestError = !serverError
+      this.errorMessage = message
     },
     resetErrorState () {
       this.loading = false
